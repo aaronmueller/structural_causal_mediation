@@ -1,0 +1,11 @@
+N1[s] author | pilot | surgeon | farmer | manager | customer | officer | teacher | senator | consultant
+N1[p] authors | pilots | surgeons | farmers | managers | customers | officers | teachers | senators | consultants
+
+N2[s] guard | chef | architect | skater | dancer | minister | driver | assistant | executive | parent
+N2[p] guards | chefs | architects | skaters | dancers | ministers | drivers | assistants | executives | parents
+
+V_tr[s] likes | admires | hates | loves
+V_tr[p] like | admire | hate | love
+
+V_intr[s] laughs | swims | smiles | is | has
+V_intr[p] laugh | swim | smile | are | have
