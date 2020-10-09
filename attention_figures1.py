@@ -20,7 +20,7 @@ from mpl_toolkits.axes_grid1.colorbar import colorbar
 from attention_utils import topk_indices
 
 
-def save_figures(data, source, model_version, filter, suffix, k=10):
+def save_figures(data, source, model_version, filter, suffix=None, k=10):
 
     # Load data from json obj
     results = data['results']
@@ -69,11 +69,10 @@ def save_figures(data, source, model_version, filter, suffix, k=10):
     plt.legend((p3, p2[0], p1[0]), ('Total', 'Direct', 'Indirect'), loc='upper right', fontsize=11,
                bbox_to_anchor=(.99, 0.90))
     sns.despine()
-    path = 'results/attention_intervention/stacked_bar_charts'
+    path = 'structural_attention/figures/stacked_bar_charts'
     if not os.path.exists(path):
         os.makedirs(path)
-    plt.savefig(f'{path}/{source}_{model_version}_{filter}_'
-                f'{suffix}.pdf', format='pdf')
+    plt.savefig(f'{path}/{source}_{model_version}_{filter}.pdf', format='pdf')
     plt.close()
     annot = False
 
@@ -86,11 +85,10 @@ def save_figures(data, source, model_version, filter, suffix, k=10):
         ax = sns.heatmap(mean_effect, rasterized=True, annot=annot, annot_kws={"size": 9}, fmt=".2f", square=True)
         ax.set(xlabel='Head', ylabel='Layer', title=f'Mean {effect_type.capitalize()} Effect')
         plt.figure(num=1, figsize=(7, 5))
-        path = f'results/attention_intervention/heat_maps_{effect_type}'
+        path = f'structural_attention/figures/heat_maps_{effect_type}'
         if not os.path.exists(path):
             os.makedirs(path)
-        plt.savefig(f'{path}/{source}_{model_version}_{filter}_'
-                    f'{suffix}.pdf', format='pdf')
+        plt.savefig(f'{path}/{source}_{model_version}_{filter}.pdf', format='pdf')
         plt.close()
 
     # Plot layer-level bar chart for indirect and direct effects
@@ -102,11 +100,10 @@ def save_figures(data, source, model_version, filter, suffix, k=10):
         plt.figure(num=1, figsize=(5, 5))
         ax = sns.barplot(x=mean_effect, y=list(range(n_layers)), orient="h", color="#4472C4")
         ax.set(ylabel='Layer', title=f'Mean {effect_type.capitalize()} Effect')
-        path = f'results/attention_intervention/layer_{effect_type}'
+        path = f'structural_attention/figures/layer_{effect_type}'
         if not os.path.exists(path):
             os.makedirs(path)
-        plt.savefig(f'{path}/{source}_{model_version}_{filter}_'
-                    f'{suffix}.pdf', format='pdf')
+        plt.savefig(f'{path}/{source}_{model_version}_{filter}.pdf', format='pdf')
         plt.close()
 
     # Plot combined heatmap and barchart for direct and indirect effects
@@ -192,10 +189,10 @@ def save_figures(data, source, model_version, filter, suffix, k=10):
             ax2.spines['left'].set_visible(False)
             ax2.xaxis.set_ticks_position('bottom')
             ax2.axvline(0, linewidth=.85, color='black')
-            path = f'results/heat_maps_with_bar_{effect_type}{"_sorted" if do_sort else ""}'
+            path = f'structural_attention/figures/heat_maps_with_bar_{effect_type}{"_sorted" if do_sort else ""}'
             if not os.path.exists(path):
                 os.makedirs(path)
-            fname = f'{path}/{source}_{model_version}_{filter}_{suffix}.pdf'
+            fname = f'{path}/{source}_{model_version}_{filter}.pdf'
             plt.savefig(fname, format='pdf')
             plt.close()
 
@@ -203,8 +200,12 @@ def main():
     sns.set_context("paper")
     sns.set_style("white")
 
-    model_versions = ['distilgpt2', 'gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl']
-    filters = ['filtered', 'unfiltered']
+    #model_versions = ['distilgpt2', 'gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl']
+    model_versions = ['gpt2-medium']
+    #filters = ['filtered', 'unfiltered']
+    filters = ['filtered']
+    #structures = ['simple_agreement', 'within_obj_rel', 'across_obj_rel', 'across_subj_rel']
+    structures = ['simple_agreement']
 
     # For testing:
     #
@@ -217,6 +218,20 @@ def main():
     #     save_figures(data, 'winobias', model_version, filter, split)
     # return
 
+    # process structural bias
+    for model_version in model_versions:
+        for filter in filters:
+            for structure in structures:
+                fname = f"structural_attention/{structure}/attention_intervention_{model_version}_{filter}.json"
+                if not os.path.exists(fname):
+                    print("File does not exist:", fname)
+                    continue
+                with open(fname) as f:
+                    data = json.load(f)
+                    save_figures(data, structure, model_version, filter)
+            
+
+    '''
     # Process winobias
     for model_version in model_versions:
         for filter in filters:
@@ -240,7 +255,7 @@ def main():
                 with open(fname) as f:
                     data = json.load(f)
                     save_figures(data, 'winogender', model_version, filter, stat)
-
+    '''
 
 if __name__ == '__main__':
     main()

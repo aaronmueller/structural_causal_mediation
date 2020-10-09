@@ -102,10 +102,14 @@ def get_template_list(indices=None, structure=None, grammar=None):
         templates = StrTemplates("The {}", structure, grammar)
     elif structure == "across_obj_rel":
         templates = StrTemplates("The {} that the {} {}", structure, grammar)
+    elif structure == "across_obj_rel_no_that":
+        templates = StrTemplates("The {} the {} {}", structure, grammar)
     elif structure == "across_subj_rel":
         templates = StrTemplates("The {} that {} the {}", structure, grammar)
     elif structure == "within_obj_rel":
         templates = StrTemplates("The {} that the {}", structure, grammar)
+    elif structure == "within_obj_rel_no_that":
+        templates = StrTemplates("The {} the {}", structure, grammar)
 
     return templates.base_strings
 
@@ -148,9 +152,9 @@ def construct_interventions(base_sent, professions, tokenizer, DEVICE, structure
         candidate_sing = "likes"; candidate_pl = "like"
     if structure == "across_subj_rel": 
         sub = base_sent.split()[-1]
-    elif structure == "across_obj_rel":
+    elif structure.startswith("across_obj_rel"):
         sub = base_sent.split()[-2]
-    elif structure == "within_obj_rel":
+    elif structure.startswith("within_obj_rel"):
         sub = base_sent.split()[1]
     for idx, p in enumerate(professions):
         all_word_count += 1

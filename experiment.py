@@ -56,6 +56,7 @@ class Intervention():
         for c in candidates:
             # '. ' added to input so that tokenizer understand that first word follows a space.
             tokens = self.enc.tokenize('. ' + c)[1:]
+            # tokens = self.enc.tokenize(c)
             self.candidates.append(tokens)
 
         self.candidates_tok = [self.enc.convert_tokens_to_ids(tokens)
@@ -77,7 +78,7 @@ class StrTemplates():
                 self.base_strings['pl'].append(base_string)
             for N1 in grammar[('N1', frozenset('s'))]:
                 self.base_strings['sing'].append(base_string)
-        elif structure == "across_obj_rel":
+        elif structure.startswith("across_obj_rel"):
             for N2 in grammar[('N2', frozenset('p'))]:
                 for V_tr in grammar[('V_tr', frozenset('p'))]:
                     self.base_strings['sing'].append(base_string.format('{}', N2, V_tr))
@@ -92,7 +93,7 @@ class StrTemplates():
             for N2 in grammar[('N2', frozenset('s'))]:
                 for V_tr in grammar[('V_tr', frozenset('p'))]:
                     self.base_strings['pl'].append(base_string.format('{}', V_tr, N2))
-        elif structure == "within_obj_rel":
+        elif structure.startswith("within_obj_rel"):
             for N1 in grammar[('N1', frozenset('p'))]:
                 self.base_strings['sing'].append(base_string.format(N1, '{}'))
             for N1 in grammar[('N1', frozenset('s'))]:

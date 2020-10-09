@@ -61,10 +61,14 @@ def load_structural_interventions(tokenizer, device, structure=None):
         templates = StrTemplates("The {}", structure, grammar)
     elif structure == "across_obj_rel":
         templates = StrTemplates("The {} that the {} {}", structure, grammar)
+    elif structure == "across_obj_rel_no_that":
+        templates = StrTemplates("The {} the {} {}", structure, grammar)
     elif structure == "across_subj_rel":
         templates = StrTemplates("The {} that {} the {}", structure, grammar)
     elif structure == "within_obj_rel":
         templates = StrTemplates("The {} that the {}", structure, grammar)
+    elif structure == "within_obj_rel_no_that":
+        templates = StrTemplates("The {} the {}", structure, grammar)
     templates = templates.base_strings
     intervention_types = ["diffnum_direct", "diffnum_indirect"]
 
@@ -81,11 +85,11 @@ def load_structural_interventions(tokenizer, device, structure=None):
         for template in templates[number]:
             if structure.startswith("within"):
                 sub = template.split()[-1]
-            elif structure == "across_obj_rel":
+            elif structure.startswith("across_obj_rel"):
                 sub = template.split()[-2]
             elif structure == "across_subj_rel":
                 sub = template.split()[-1]
-            elif structure == "within_obj_rel":
+            elif structure.startswith("within_obj_rel"):
                 sub = template.split()[1]
             for idx, p in enumerate(professions[number]):
                 if structure == "simple_agreement":

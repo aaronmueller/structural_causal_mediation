@@ -13,7 +13,8 @@ import os
 
 def main():
 
-    models = ['distilgpt2', 'gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl']
+    #models = ['distilgpt2', 'gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl']
+    models = ['gpt2-medium']
     model_to_name = {
         'distilgpt2': 'distil',
         'gpt2': 'small',
@@ -29,8 +30,8 @@ def main():
     palette = sns.color_palette()
 
     filter = 'filtered'
-    split = 'dev'
-    dataset = 'winobias'
+    #split = 'dev'
+    dataset = 'simple_agreement'
 
     te = []
     nde_all = []
@@ -39,7 +40,7 @@ def main():
     model_names = []
 
     for model_version in models:
-        fname = f"{dataset}_data/attention_intervention_{model_version}_{filter}_{split}.json"
+        fname = f"structural_attention/{dataset}/attention_intervention_{model_version}_{filter}.json"
         with open(fname) as f:
             data = json.load(f)
         df = pd.DataFrame(data['results'])
@@ -79,7 +80,7 @@ def main():
         patch.set_y(-1)
     sns.despine()
     plt.subplots_adjust(left=0.08, right=0.99, top=0.99, bottom=0.15)
-    path = 'results/attention_intervention/'
+    path = 'structural_attention/figures/'
     if not os.path.exists(path):
         os.makedirs(path)
     plt.savefig(f'{path}effects.pdf', format='pdf')
