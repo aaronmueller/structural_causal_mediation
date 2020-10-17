@@ -205,7 +205,7 @@ def main():
     #filters = ['filtered', 'unfiltered']
     filters = ['filtered']
     #structures = ['simple_agreement', 'within_obj_rel', 'across_obj_rel', 'across_subj_rel']
-    structures = ['simple_agreement']
+    structures = ['within_obj_rel_no_that', 'across_obj_rel_no_that']
 
     # For testing:
     #

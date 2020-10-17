@@ -15,7 +15,8 @@ import pandas as pd
 import seaborn as sns
 
 sns.set_context("talk")
-sns.set_style("whitegrid")
+# sns.set_style("whitegrid")
+sns.set_style("darkgrid")
 
 
 def get_top_perc_per_layer(df, n=10):
@@ -45,6 +46,10 @@ def main(folder_name="results/20191114_neuron_intervention/"):
 
     # Load results for all the models.
     neuron_effect_fnames = [f for f in os.listdir(folder_name) if "neuron_effects" in f]
+    # Load models in specific order
+    #neuron_effect_fnames = ["distilgpt2_neuron_effects.csv", "gpt2_neuron_effects.csv", \
+    #        "gpt2-random_neuron_effects.csv", "gpt2-medium_neuron_effects.csv", \
+    #        "gpt2-large_neuron_effects.csv"]
     modelname_to_effects = {}
     for f in neuron_effect_fnames:
         modelname = sanitize_model_names[f.split("_")[0]]
@@ -53,7 +58,9 @@ def main(folder_name="results/20191114_neuron_intervention/"):
 
     plt.figure(figsize=(10, 4))
     color_index = 0
-    for k, v in modelname_to_effects.items():
+    # for k, v in modelname_to_effects.items():
+    for k in ("GPT2-distil", "GPT2-small", "GPT2-small random", "GPT2-medium", "GPT2-large"):
+        v = modelname_to_effects[k]
         # Get top 2.5% neurons (empirical choice, you can vary this).
         vals = get_top_perc_per_layer(v, 2.5)
         # Plot a line for mean per layer.
