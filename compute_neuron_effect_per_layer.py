@@ -86,6 +86,20 @@ def main(folder_name="results/20191114_neuron_intervention/"):
     plt.ylim([0.995, 1.05])
     plt.yticks([1 + i / 100 for i in range(0, 6)], [str(i / 100) for i in range(0, 6)])
 
+    # auto title
+    if "simple_agreement" in folder_name:
+        plt.title("simple agreement", fontsize=18)
+    elif "within_obj_rel_no_that" in folder_name:
+        plt.title("within object relative clause (no that)", fontsize=18)
+    elif "across_obj_rel_no_that" in folder_name:
+        plt.title("across object relative clause (no that)", fontsize=18)
+    elif "across_subj_rel" in folder_name:
+        plt.title("across subject relative clause", fontsize=18)
+    elif "within_obj_rel" in folder_name:
+        plt.title("within object relative clause", fontsize=18)
+    elif "across_obj_rel" in folder_name:
+        plt.title("across object relative clause", fontsize=18)
+
     # Need to reorder legend labels to increasing model size.
     # Requires results for all 6 models, ignore otherwise.
     try:

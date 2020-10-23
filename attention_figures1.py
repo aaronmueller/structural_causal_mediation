@@ -19,6 +19,12 @@ from mpl_toolkits.axes_grid1.colorbar import colorbar
 
 from attention_utils import topk_indices
 
+structure_to_title = {'simple_agreement': 'simple agreement',
+        'within_obj_rel': 'within object relative clause',
+        'across_obj_rel': 'across object relative clause',
+        'across_subj_rel': 'across subject relative clause',
+        'within_obj_rel_no_that': 'within object relative clause (no that)',
+        'across_obj_rel_no_that': 'across object relative clause (no that)'}
 
 def save_figures(data, source, model_version, filter, suffix=None, k=10):
 
@@ -173,12 +179,12 @@ def save_figures(data, source, model_version, filter, suffix=None, k=10):
             cax.yaxis.set_ticks_position('left')
             cbar.solids.set_edgecolor("face")
             cbar.ax.tick_params(labelsize=7, length=4, pad=2)
-            ax1.set_title('Head Effect', size=9)
-            ax1.set_xlabel('Head', size=8)
-            ax1.set_ylabel('Layer', size=8)
+            ax1.set_title(structure_to_title[source], size=6)
+            ax1.set_xlabel('Head', size=6)
+            ax1.set_ylabel('Layer', size=6)
             for _, spine in ax1.spines.items():
                 spine.set_visible(True)
-            ax2.set_title('         Layer Effect', size=9)
+            ax2.set_title('         Layer Effect', size=6)
             bp = sns.barplot(x=effect_layer, ax=ax2, y=list(range(n_layers)), color="#3D4FC4", orient="h")
             plt.setp(bp.get_xticklabels(), fontsize=7)
             bp.tick_params(axis='x', pad=1, length=3)
@@ -193,7 +199,7 @@ def save_figures(data, source, model_version, filter, suffix=None, k=10):
             if not os.path.exists(path):
                 os.makedirs(path)
             fname = f'{path}/{source}_{model_version}_{filter}.pdf'
-            plt.savefig(fname, format='pdf')
+            plt.savefig(fname, format='pdf', bbox_inches='tight')
             plt.close()
 
 def main():
@@ -204,8 +210,9 @@ def main():
     model_versions = ['gpt2-medium']
     #filters = ['filtered', 'unfiltered']
     filters = ['filtered']
-    #structures = ['simple_agreement', 'within_obj_rel', 'across_obj_rel', 'across_subj_rel']
-    structures = ['within_obj_rel_no_that', 'across_obj_rel_no_that']
+    structures = ['simple_agreement', 'within_obj_rel', 'across_obj_rel', 'across_subj_rel', 'within_obj_rel_no_that', 'across_obj_rel_no_that']
+    #structures = ['simple_agreement']
+    #structures = ['within_obj_rel_no_that', 'across_obj_rel_no_that']
 
     # For testing:
     #
