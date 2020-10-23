@@ -1,6 +1,6 @@
 ## Mediation Analysis
 
-This repository contains the code to replicate the experiments for the paper [Causal Mediation Analysis for Interpreting Neural NLP: The Case of Gender Bias](https://arxiv.org/abs/2004.12265).
+This repository modifies the code from the paper [Causal Mediation Analysis for Interpreting Neural NLP: The Case of Gender Bias](https://arxiv.org/abs/2004.12265) for syntactic analysis. We load a simple grammar (`structural/grammar.avg`) to populate a set of relative clause templates. Models are run as before, but with a new `--structure` argument (see `run_profession_neuron.sh` and `attention_intervention_structural.sh`). 
 
 ### Neuron Experiments
 
